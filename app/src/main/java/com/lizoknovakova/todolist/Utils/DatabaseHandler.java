@@ -19,22 +19,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TASK = "task";
     private static final String STATUS = "status";
 
-    private static final String CREATE_TABLE = "CREATE TABLE " + TABLE + "("  + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + TASK + "TEXT, " + STATUS + " INTEGER";
+    private static final String CREATE_TABLE = "CREATE TABLE " + TABLE + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TASK + " TEXT, " + STATUS + " INTEGER)";
 
     private SQLiteDatabase db;
 
-    private DatabaseHandler(Context context){
+    public DatabaseHandler(Context context){
         super(context, NAME, null, VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+    public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
     }
@@ -69,6 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         } finally {
             db.endTransaction();
+            assert cursor != null;
             cursor.close();
         }
         return tasksList;
